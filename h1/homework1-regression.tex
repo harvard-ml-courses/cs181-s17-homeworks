@@ -111,8 +111,7 @@ Please type your solutions after the corresponding problems using this \LaTeX\ t
     \textit{semi}-definite, i.e.  all non-negative eigenvalues, prove that the
     full matrix is invertible.
 
-  \item[(e)] What difference does the last problem highlight standard least-squares regression versus
-    ridge regression?
+  \item[(e)] What difference does the last problem highlight between standard least-squares regression versus ridge regression?
 
 \end{itemize}
 \end{problem}
@@ -141,13 +140,13 @@ p(\boldw) = \mathcal{N}(\boldw \given \bold0, \alpha^{-1}\ident ),
 \end{align*}
 where $\alpha$ is as scalar precision hyperparameter that controls the variance of the Gaussian prior.  Define the likelihood as,
 \begin{align*}
-p(\boldy \given \boldx) &= \prod_{i=1}^n \mcN(y_i \given \boldw^\trans \boldx_i, \beta^{-1}),
+p(\boldy \given \boldX, \boldw) &= \prod_{i=1}^n \mcN(y_i \given \boldw^\trans \boldx_i, \beta^{-1}),
 \end{align*}
 where $\beta$ is another fixed scalar defining the variance. \\
 
 
 \noindent Using the fact that the posterior is the product of the prior and the likelihood (up to a normalization constant), i.e., 
-\[\arg\max_{\boldw} \ln p(\boldw \given \boldy)= \arg\max_{\boldw} \ln p(\boldw) + \ln p(\boldy \given \boldw).\]
+\[\arg\max_{\boldw} \ln p(\boldw \given \boldy, \boldX)= \arg\max_{\boldw} \ln p(\boldw) + \ln p(\boldy \given \boldX, \boldw).\]
 
 \noindent Show that maximizing the log posterior is equivalent to minimizing a regularized loss function given by ${\mcL(\boldw) + \lambda \mcR(\boldw)}$, where
 \begin{align*}
@@ -155,7 +154,7 @@ where $\beta$ is another fixed scalar defining the variance. \\
 \mcR(\boldw) &= \frac{1}{2}\boldw^\trans \boldw
 \end{align*} \\
 
-\noindent Do this by writing $\ln p(\boldw \given \boldy)$ as a function of $\mcL(\boldw)$ and $\mcR(\boldw)$, dropping constant terms if necessary.  Conclude that maximizing this posterior is equivalent to minimizing the regularized error term given by $\mcL(\boldw) + \lambda \mcR(\boldw)$ for a $\lambda$ expressed in terms of the problem's constants.  
+\noindent Do this by writing $\ln p(\boldw \given \boldy, \boldX)$ as a function of $\mcL(\boldw)$ and $\mcR(\boldw)$, dropping constant terms if necessary.  Conclude that maximizing this posterior is equivalent to minimizing the regularized error term given by $\mcL(\boldw) + \lambda \mcR(\boldw)$ for a $\lambda$ expressed in terms of the problem's constants.  
 \end{problem}
 
 
@@ -230,10 +229,11 @@ case, and for each of the following sets of basis functions:
 	\item[(d)] $\phi_j(x) = \sin(x / j)$ for $j=1, \ldots, 10$
 	\item[(e)] $\phi_j(x) = \sin(x / j)$ for $j=1, \ldots, 22$
 \end{itemize}
-  In addition to the plots, provide one or two sentences for each, explaining
-  whether you think it is fitting well, overfitting or underfitting.  If it does
-  not fit well, provide a sentence explaining why. A good fit should capture the
-  most important trends in the data.
+In addition to the plots, provide one or two sentences for each with
+numerical support, explaining whether you think it is fitting well,
+overfitting or underfitting.  If it does not fit well, provide a
+sentence explaining why. A good fit should capture the most important
+trends in the data.
 	\end{problem}
 
 \subsubsection*{Solution}
