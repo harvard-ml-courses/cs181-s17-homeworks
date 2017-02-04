@@ -7,7 +7,7 @@ If you are reading this, the name of the repository should be cs181-s17-homework
 
 If you don't see your Github ID at the end of the repository name, you need to find the link on [Canvas](https://canvas.harvard.edu/courses/21992) to create your own private repository.
 
-If you don't know what any of this means, contact [Nia](mailto:nperera@seas.harvard.edu), who administers the Github Classroom. These instructions only apply to your private repo.
+If you don't know what any of this means, contact a TF. These instructions only apply to your private repo.
 
 ## How this repository works
 This repository is a copy of a "seed" repository maintained by the TFs. Right now there should be six folders in this repository. Throughout this semester, your TFs will add homework assignments to the seed repository, and you will be responsible for copying them into your repository (using "fetch" and "merge", in git-speak). Assuming you've already cloned your repository locally, you can get the new files by:
