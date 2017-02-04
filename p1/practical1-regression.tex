@@ -27,11 +27,12 @@
 \begin{document}
 	\begin{center}
 		{\Large Practical 1: Predicting the Efficiency of Organic Photovoltaics}
-		Kaggle submission closes at 5pm on Thursday, February 9th, 2016\\
-		Writeup due 5pm on Friday,  February 10th 2016 
+		Kaggle submission closes at 11:59pm on Thursday, February 9th, 2016\\
+		Writeup due 5:00pm on Friday,  February 10th 2016 
 	\end{center}
 	
-	\noindent You will do this assignment in groups of three. You can seek partners via Piazza.  Course staff can also help you find partners.  Submit one PDF writeup per team via the Canvas site.
+	\noindent You will do this assignment in groups of three. You can seek partners via Piazza.  Course staff can also help you find partners.  
+Submit one PDF writeup per team via the Canvas site. Make sure to use the provided \LaTeX \hspace{1pt} template!
 	
 	\paragraph{Competing on Kaggle:} You are expected to submit at least one set of predictions to the Kaggle competition online at
 	\begin{center}
@@ -63,7 +64,7 @@
 	One of the challenges of making predictions about molecules is finding a good feature representation.  Clearly, the SMILES string itself isn't going to be all that helpful.  Luckily, many chemists have built tools to build interesting representations.  One such tool is a Python package called \href{http://www.rdkit.org/}{RDKit}.  With it you can easily load SMILES strings and produce features. Alternatively, you can just use the features we've already extracted with RDKit, which produced 256-dimensional binary vectors.  These vectors are in the training and test files provided.
 	
 	\subsection*{Data Files}
-	There are five files of interest, which you can get through GitHub.
+	There are five files of interest, which you can get from the Kaggle site. 
 	\begin{itemize}
 		\item \verb|train.csv.gz| -- This file contains information about one million molecules.  It has 258 columns.  The first column is a SMILES string, which is a representation of the molecule in case you would like to see what it looks like or build better feature representations. The next 256 columns are a binary feature representation that RDKit outputs.  These are features of the molecule that you might use to build a regression model.  The final column is the difference in energy between the HOMO and the LUMO.  This is the label you are trying to predict.
 		\item \verb|test.csv.gz| -- This file contains another 800,000 or so molecules.  In this case, the label is not provided.  These are the ones you are trying to make predictions for. The first column is a numeric identifier that you should use when constructing your prediction file to upload to Kaggle.
