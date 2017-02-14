@@ -248,7 +248,7 @@ so that in addition, the components sum to 1.
 %
   \item Softmax preserves order. This means that if elements $z_k < z_\ell$,
 in $\boldz$, then  $\mathrm{softmax}(\boldz)_k < \mathrm{softmax}(\boldz)_{\ell}$ for any $k,\ell$. 
-  \item Show that \[\frac{\partial \mathrm{softmax}(\boldz)_k }{\partial z_j} = z_k (I_{kj} - z_j) \ \ \text{for\ any\ } k, j  \],
+  \item Show that \[\frac{\partial \mathrm{softmax}(\boldz)_k }{\partial z_j} = \mathrm{softmax}(\boldz)_k (I_{kj} - \mathrm{softmax}(\boldz)_j) \ \ \text{for\ any\ } k, j  \],
 %
 where indicator $I_{kj}=1$ if $k=j$ and $I_{kj}=0$ otherwise.
 %
