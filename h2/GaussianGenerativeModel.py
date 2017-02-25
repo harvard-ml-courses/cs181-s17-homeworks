@@ -18,23 +18,75 @@ class GaussianGenerativeModel:
 
     # TODO: Implement this method!
     def fit(self, X, Y):
-        self.X = X
-        self.Y = Y
-        return
+        self.X=X
+        self.Y=Y
+        prop1=len(X[Y==0])/float(len(X))
+        prop2=len(X[Y==1])/float(len(X))
+        prop3=len(X[Y==2])/float(len(X))
+        
+        mu1=np.mean(X[Y==0],axis=0)
+        mu2=np.mean(X[Y==1],axis=0)
+        mu3=np.mean(X[Y==2],axis=0)
+        
+        if self.isSharedCovariance==True:
+            covmatrix = prop1*(np.cov(X[Y==0].T))+prop2*(np.cov(X[Y==1].T))+prop3*(np.cov(X[Y==2].T))
+            self.covmatrix=covmatrix
+        else:
+            self.covmatrix1=np.cov(X[Y==0].T)
+            self.covmatrix2=np.cov(X[Y==1].T)
+            self.covmatrix3=np.cov(X[Y==2].T)
+            
+        self.mu1=mu1
+        self.mu2=mu2
+        self.mu3=mu3
+        self.prop1=prop1
+        self.prop2=prop2
+        self.prop3=prop3
 
     # TODO: Implement this method!
     def predict(self, X_to_predict):
         # The code in this method should be removed and replaced! We included it just so that the distribution code
         # is runnable and produces a (currently meaningless) visualization.
-        Y = []
-        for x in X_to_predict:
-            val = 0
-            if x[1] > 4:
-                val += 1
-            if x[1] > 6:
-                val += 1
-            Y.append(val)
-        return np.array(Y)
+        if self.isSharedCovariance==True:   
+            likelihoods=[]
+            likelihoods.append(np.log(self.prop1)+np.log(multivariate_normal.pdf(X_to_predict,self.mu1,self.covmatrix)))
+            likelihoods.append(np.log(self.prop2)+np.log(multivariate_normal.pdf(X_to_predict,self.mu2,self.covmatrix)))
+            likelihoods.append(np.log(self.prop3)+np.log(multivariate_normal.pdf(X_to_predict,self.mu3,self.covmatrix)))
+            #self.likelihoods=likelihoods
+            return np.argmax(np.array(likelihoods).T,axis=1)
+        else:
+            likelihoods=[]
+            likelihoods.append(np.log(self.prop1)+np.log(multivariate_normal.pdf(X_to_predict,self.mu1,self.covmatrix1)))
+            likelihoods.append(np.log(self.prop2)+np.log(multivariate_normal.pdf(X_to_predict,self.mu2,self.covmatrix2)))
+            likelihoods.append(np.log(self.prop3)+np.log(multivariate_normal.pdf(X_to_predict,self.mu3,self.covmatrix3)))
+            #self.likelihoods=likelihoods
+            return np.argmax(np.array(likelihoods).T,axis=1)
+            
+
+    def returnlikelihoods(self):
+        ## Make one-hot matrix
+        n_labels = 3
+        targets = self.Y
+        #create an empty one-hot matrix
+        ohm = np.zeros((targets.shape[0], n_labels))
+        #set target idx to 1
+        ohm[np.arange(targets.shape[0]), targets] = 1
+        if self.isSharedCovariance==True:   
+            likelihoods=[]
+            likelihoods.append(np.log(self.prop1)+np.log(multivariate_normal.pdf(self.X,self.mu1,self.covmatrix)))
+            likelihoods.append(np.log(self.prop2)+np.log(multivariate_normal.pdf(self.X,self.mu2,self.covmatrix)))
+            likelihoods.append(np.log(self.prop3)+np.log(multivariate_normal.pdf(self.X,self.mu3,self.covmatrix)))
+            self.likelihoods=likelihoods
+        else:
+            likelihoods=[]
+            likelihoods.append(np.log(self.prop1)+np.log(multivariate_normal.pdf(self.X,self.mu1,self.covmatrix1)))
+            likelihoods.append(np.log(self.prop2)+np.log(multivariate_normal.pdf(self.X,self.mu2,self.covmatrix2)))
+            likelihoods.append(np.log(self.prop3)+np.log(multivariate_normal.pdf(self.X,self.mu3,self.covmatrix3)))
+            self.likelihoods=likelihoods
+        
+        temp=sum(sum(np.array(self.likelihoods).T*ohm))
+        return temp
+        
 
     # Do not modify this method!
     def visualize(self, output_file, width=3, show_charts=False):

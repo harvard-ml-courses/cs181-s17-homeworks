@@ -11,7 +11,7 @@ from GaussianGenerativeModel import GaussianGenerativeModel
 # adjust these as you try to find the best fit for each classifier.
 
 # Logistic Regression parameters
-eta = .1
+eta = .0001
 lambda_parameter = .1
 
 
@@ -23,17 +23,22 @@ df = pd.read_csv("fruit.csv")
 X = df[['width', 'height']].values
 Y = (df['fruit'] - 1).values
 
+
+lr = LogisticRegression(eta=eta, lambda_parameter=lambda_parameter)
+loss=lr.fit(X,Y)
+print "loss for eta of",eta,"is:",loss
+lr.visualize('logistic_regression_result.png')
+lr.plot()
+
 nb1 = GaussianGenerativeModel(isSharedCovariance=False)
 nb1.fit(X,Y)
 nb1.visualize("generative_result_separate_covariances.png")
+likelihood=nb1.returnlikelihoods()
+print "Likelihood is:",likelihood
 
 nb2 = GaussianGenerativeModel(isSharedCovariance=True)
 nb2.fit(X,Y)
 nb2.visualize("generative_result_shared_covariances.png")
-
-lr = LogisticRegression(eta=eta, lambda_parameter=lambda_parameter)
-lr.fit(X,Y)
-lr.visualize('logistic_regression_result.png')
-
-
+likelihood=nb2.returnlikelihoods()
+print "Likelihood is:",likelihood
 

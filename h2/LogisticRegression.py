@@ -21,21 +21,52 @@ class LogisticRegression:
     def fit(self, X, C):
         self.X = X
         self.C = C
-        return
+        weights = np.zeros((3,3))
+        weights.fill(1)
+        
+        ones=np.ones((len(X),1))
+        data=np.concatenate((ones,X),axis=1)
+        
+        ## Make one-hot matrix
+        n_labels = 3
+        targets = C
+        #create an empty one-hot matrix
+        ohm = np.zeros((targets.shape[0], n_labels))
+        #set target idx to 1
+        ohm[np.arange(targets.shape[0]), targets] = 1
+        loss=[]
+        weights_new=weights
+        for i in xrange(500000):
+            weights=weights_new
+            sm_matrix = np.exp(np.dot(data,weights.T))
+             ##test is the final softmax matrix
+            test=sm_matrix/sm_matrix.sum(axis=1)[:,None]
+            ## multiply softmax by ohm to calculate loss.
+            loss.append(-sum(sum(np.log(test)*ohm)+self.lambda_parameter*sum(sum(weights**2))))
+            gradient=np.dot((test-ohm).T,data)
+            weights_new = weights-self.eta*(gradient+2*self.lambda_parameter*weights)
+
+        self.weights=weights_new
+        self.loss=loss
+        return self.loss[-1]
 
     # TODO: Implement this method!
     def predict(self, X_to_predict):
         # The code in this method should be removed and replaced! We included it just so that the distribution code
         # is runnable and produces a (currently meaningless) visualization.
-        Y = []
-        for x in X_to_predict:
-            val = 0
-            if x[1] > 4:
-                val += 1
-            if x[1] > 6:
-                val += 1
-            Y.append(val)
-        return np.array(Y)
+        ones=np.ones((len(X_to_predict),1))
+        newX = np.concatenate((ones,X_to_predict),axis=1)
+        
+        return np.argmax(np.dot(newX,self.weights.T),axis=1)
+
+    def plot(self):
+        # The code in this method should be removed and replaced! We included it just so that the distribution code
+        # is runnable and produces a (currently meaningless) visualization.
+        plt.figure()
+        plt.plot(self.loss)
+        plt.ylabel("Loss")
+        plt.xlabel("Number of Iterations")
+        plt.suptitle("Loss over iterations")
 
     def visualize(self, output_file, width=2, show_charts=False):
         X = self.X
