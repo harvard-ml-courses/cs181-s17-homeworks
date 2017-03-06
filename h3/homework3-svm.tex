@@ -1,0 +1,274 @@
+
+\documentclass[submit]{harvardml}
+
+% Put in your full name and email address.
+\name{Your Name}
+\email{email@fas.harvard.edu}
+
+% List any people you worked with.
+\collaborators{%
+  John Doe,
+  Fred Doe
+}
+
+% You don't need to change these.
+\course{CS181-S17}
+\assignment{Assignment \#3}
+\duedate{5:00pm March 24, 2016}
+
+\usepackage[OT1]{fontenc}
+\usepackage[colorlinks,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage[pdftex]{graphicx}
+\usepackage{subfig}
+\usepackage{fullpage}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{color}
+\usepackage{todonotes}
+\usepackage{listings}
+\usepackage{common}
+\usepackage{bm}
+
+\usepackage[mmddyyyy,hhmmss]{datetime}
+
+\definecolor{verbgray}{gray}{0.9}
+
+\lstnewenvironment{csv}{%
+  \lstset{backgroundcolor=\color{verbgray},
+  frame=single,
+  framerule=0pt,
+  basicstyle=\ttfamily,
+  columns=fullflexible}}{}
+
+\begin{document}
+\begin{center}
+{\Large Homework 3: Max-Margin and SVM}\\
+\end{center}
+\subsection*{Introduction}
+
+This homework assignment will have you work with max-margin methods
+and SVM classification. The aim of the assignment is (1) to further
+develop your geometrical intuition behind margin-based classification
+and decision boundaries, (2) to explore the properties of kernels and
+how they provide a different form of feature development from
+basis functions, and finally (3) to implement a basic Kernel based
+classifier.
+
+There is a mathematical component and a programming component to this
+homework.  Please submit your PDF and Python files to Canvas, and push
+all of your work to your GitHub repository. If a question requires you
+to make any plots, like Problem 3, please include those in the
+writeup.
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Problem 1
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{problem}[Fitting an SVM by hand, 7pts]
+  For this problem you will solve an SVM without the help of a
+  computer, relying instead on principled rules and properties of
+  these classifiers.
+
+Consider a dataset with the following 7 data points each with $x \in \reals$ : \[\{(x_i, y_i)\}_i =\{(-3
+, +1 ), (-2 , +1 ) , (-1,  -1 ), (0, -1), ( 1 , -1 ), ( 2 , +1 ), ( 3 , +1 )\}\] Consider
+mapping these points to $2$ dimensions using the feature vector $\bphi(x) =  (x, x^2)$. The max-margin classifier objective is given by:
+\begin{align*}
+  &\min_{\mathbf{w}, w_0} \|\mathbf{w}\|_2^2 \\
+  \quad \text{s.t.} \quad & y_i(\mathbf{w}^\top \bphi(x_i) + w_0) \geq 1,~\forall i \in \{1,\ldots, n\}
+\end{align*}
+
+The exercise has been broken down into a series of questions, each
+providing a part of the solution. Make sure to follow the logical structure of
+the exercise when composing your answer and to justify each step.
+
+\begin{enumerate}
+  \item Write down a vector that is parallel to the optimal vector $\mathbf{w}$. Justify
+    your answer.
+  \item What is the value of the margin achieved by $\mathbf{w}$? Justify your
+    answer.
+  \item Solve for $\mathbf{w}$ using your answers to the two previous questions.
+  \item Solve for $w_0$. Justify your answer.
+  \item Write down the discriminant, $h(x; \mathbf{w}, w_0)$, as an explicit function of $x$.
+\end{enumerate}
+
+\end{problem}
+\subsection*{Solution}
+
+
+
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Problem 2
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{problem}[Composing Kernel Functions , 10pts]
+
+
+  A key benefit of SVM training is the ability to use kernel functions
+  $K(\boldx, \boldx')$ as opposed to explicit basis functions
+  $\bphi(\boldx)$. Kernels make it possible to implicitly express
+  large or even infinite dimensional basis features. We do this 
+  by computing $\bphi(\boldx)^\top\bphi(\boldx')$ directly, without ever computing $\bphi(\boldx)$ .
+
+  When training SVMs, we begin by computing the kernel matrix $\boldK$,
+  over our training data $\{\boldx_1, \ldots, \boldx_n\}$.  The kernel
+  matrix, defined as $K_{i, i'} = K(\boldx_i, \boldx_{i'})$, expresses
+  the kernel function applied between all pairs of training points.
+
+  In class, we saw Mercer's theorem, which tells us that any function
+  $K$ that yields a positive semi-definite kernel matrix forms a valid
+  kernel, i.e. corresponds to a matrix of dot-products under
+  \textit{some} basis $\bphi$. Therefore instead of using an explicit
+  basis, we can build kernel functions directly that fulfill this
+  property.
+
+  A particularly nice benefit of this theorem is that it allows us to
+  build more expressive kernels by composition.  In this problem, you
+  are tasked with using Mercer's theorem and the definition of a
+  kernel matrix to prove that the following  compositions are valid kernels, 
+  assuming $K^{(1)}$ and $K^{(2)}$ are valid kernels. Recall that a positive semi-definite matrix $\boldK$ requires $\mathbf{z}^\top \mathbf{Kz} \geq 0,\ \forall\ \mathbf{z} \in \reals^n$.
+
+  \begin{enumerate}
+  \item $K(\boldx, \boldx') = c\,K^{(1)}(\boldx, \boldx') \quad \text{for $c>0$}$
+  \item $ 	K(\boldx, \boldx')= K^{(1)}(\boldx, \boldx') + K^{(2)}(\boldx, \boldx')$
+  \item   $ K(\boldx, \boldx') = f(\boldx)\,K^{(1)}(\boldx, \boldx')\,f(\boldx') \quad
+  \text{where $f$ is any function from~$\reals^m$ to $\reals$}$
+  \item $ K(\boldx, \boldx') = K^{(1)}(\boldx, \boldx')\,K^{(2)}(\boldx,
+  \boldx')$
+
+  [Hint: Use the property that for any
+  $\bphi'(\boldx)$,
+  $K(\boldx, \boldx') = \bphi'(\boldx)^\top\bphi'(\boldx')$ forms a
+  positive semi-definite kernel matrix. ]
+  \item 
+  \begin{enumerate}
+  	\item The $\exp$ function can be written as,
+  	$$\exp\{x\} = \lim_{i\rightarrow \infty} \left(1 + x + \cdots + \frac{x^i}{i!}\right).$$
+  	Use this to show that $\exp\{xx'\}$ can be written as $\bphi'(x)^\top \bphi'(x')$ for some $\bphi'(x)$. Explain why this $\bphi'$ be hard to use as a basis in standard logistic regression.
+  	\item Using the previous identities, show that $K(\boldx, \boldx') = \exp\{ K^{(1)}(\boldx, \boldx') \}$ is a valid kernel.
+  	
+
+  \end{enumerate}
+  \item  Finally use only these identities to prove the validity of the Gaussian kernel:
+  \begin{align*}
+	K(\boldx, \boldx') &= \exp \left( \frac{-||\boldx - \boldx'||^2_2}{2\sigma^2} \right) 
+  \end{align*}
+  \end{enumerate}
+
+
+
+ \end{problem}
+\subsection*{Solution}
+
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Problem 3
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{problem}[Scaling up your SVM solver, 10pts (+3pts with extra credit)]
+
+
+
+In the previous homework, you studied a simple data set of fruit measurements.
+Here we would like you to code up a few simple SVM solvers to classify lemons from
+apples. 
+\begin{itemize}
+\item First read the paper at
+  \url{http://www.jmlr.org/papers/volume6/bordes05a/bordes05a.pdf} and
+  implement the Kernel Perceptron algorithm and the Budget Kernel
+  Perceptron algorithm. Aim to make the optimization as fast as possible.
+\item Additionally, we would like you to do some experimentation with
+  the hyperparameters for each of these models. Try seeing if you can
+  identify some patterns by changing $\beta$, N (maximum number of
+  support vectors), or the number of random samples you take.  Note
+  the training time, accuracy, types of hyperplanes, and number of
+  support vectors for various setups.
+\end{itemize}
+
+Hint: For this problem, efficiency will be an issue. Instead of directly
+implementing this algorithm using numpy matrices, you should utilize
+Python dictionaries to represent sparse matrices. This will be necessary 
+to have the algorithm run in a reasonable amount of time.   
+
+We are intentionally leaving this open-ended to allow for experimentation, and so we will be looking for your thought process and not a rigid graph this time. That being said, any visualizations that you want us to grade and refer to in your descriptions should be included in this writeup. You can use the trivial $K(x_1, x_2) = x_1^\top x_2$ kernel for this problem, though you are welcome to experiment with more interesting kernels too.
+
+Lastly, compare the classification to the naive SVM imported from scikit-learn. For extra credit (+3 pts), implement the SMO algorithm and implement the LASVM process and do the same as above.
+
+
+Answer the following reading questions in one or two sentences.
+
+\begin{enumerate}
+\item In one short sentence, state the main purpose of the paper.
+\item Identify each of the parameters in Eq. 1
+\item State one guarantee for the Kernel perceptron algorithm described in the
+  paper.
+\item What is the main way the budget kernel perceptron algorithm tries to
+  improve on the perceptron algorithm?
+\item In simple words, what is the theoretical guarantee of LASVM algorithm? How
+  does it compare to its practical performance?
+\end{enumerate}
+
+
+\end{problem}
+
+\subsection*{Solution}
+
+
+
+\newpage
+
+\subsection*{Calibration [1pt]}
+Approximately how long did this homework take you to complete?
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
