@@ -1,4 +1,4 @@
-# CS 181, Spring 2016
+# CS 181, Spring 2017
 # Homework 4: Clustering
 # Name:
 # Email:
@@ -9,10 +9,8 @@ import matplotlib.image as mpimg
 
 class KMeans(object):
 	# K is the K in KMeans
-	# useKMeansPP is a boolean. If True, you should initialize using KMeans++
-	def __init__(self, K, useKMeansPP):
+        def __init__(self, K):
 		self.K = K
-		self.useKMeansPP = useKMeansPP
 
 	# X is a (N x 28 x 28) array where 28x28 is the dimensions of each of the N images.
 	def fit(self, X):
