@@ -260,7 +260,7 @@ value function, $V^\pi_t: S\mapsto
 to go. You can find LaTeX code for the tables in the solution template. Note that you should have 2 tables, one for each time horizon. 
 %
     \item Now assume that the robot plays an \emph{optimal policy}
-      $\pi^\ast$. Find the optimal policy in the case of a finite time horizon of $t = 1, 2$ and give the corresponding 
+      $\pi^\ast_t$ (for $t$ time steps to go). Find the optimal policy in the case of a finite time horizon of $t = 1, 2$ and give the corresponding 
 MDP value functions $V^\ast_t: S\mapsto 
 \mathbb{R}$, under this
 optimal policy. You can indicate the optimal policy for each time horizon on the corresponding $V^\ast_t$ table via arrows or words in the direction that the robot should move from that state. 
@@ -269,10 +269,10 @@ optimal policy. You can indicate the optimal policy for each time horizon on the
 when it chooses a direction, there is a 80\% chance that it will go in
       that direction, and a 10\% chance it will go in the two adjacent
       (90$^\circ$ left or 90$^\circ$ right) 
-directions. Explain how this changes the MDP model. 
+directions. Explain how this changes the elements $S$, $A$, $r$, and $p(s' \given s,a)$ of the MDP model. 
 Assume the robot uses the same
- policy $\pi^*$ from the previous question (now possibly
-      non-optimal), and write this as $\pi$.
+ policy $\pi^\ast_t$ from the previous question (now possibly
+      non-optimal), and write this as $\pi_t$, and tie-break in favor of N, then E, then S then W.
 Give the corresponding 
 MDP value functions $V^\pi_t: S\mapsto 
 \mathbb{R}$, for this policy in this partial control world, for $t=2, 1$ steps left
@@ -280,6 +280,15 @@ to go. Is the policy still optimal?
   \end{enumerate}
 \end{problem}
 %\subsection*{Solution}
+
+%  Table starter code
+%  \begin{center}
+%    \begin{tabular}{c|c}
+%      $s$ & $V^\pi_1(s)$ \\ \hline
+%      State & 0
+%    \end{tabular}
+%  \end{center}
+
 \newpage
 
 \section*{The Viterbi Algorithm [15 pts]}
