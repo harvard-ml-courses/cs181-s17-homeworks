@@ -101,14 +101,14 @@ class SwingyMonkey:
         # Find the next closest tree.
         for tree in self.trees:
             if tree['x']+290 > self.monkey_left:
-                self.next_tree_info = tree.copy()
+                next_tree = tree.copy()
                 break
 
         # Construct the state dictionary to return.
         return { 'score': self.score,
-                 'tree': { 'dist': self.next_tree_info['x']+215-self.monkey_right,
-                           'top': self.screen_height-self.next_tree_info['y'],
-                           'bot': self.screen_height-self.next_tree_info['y']-self.tree_gap},
+                 'tree': { 'dist': next_tree['x']+215-self.monkey_right,
+                           'top': self.screen_height-next_tree['y'],
+                           'bot': self.screen_height-next_tree['y']-self.tree_gap},
                  'monkey': { 'vel': self.vel,
                              'top': self.screen_height - self.monkey_loc + self.monkey_img.get_height()/2,
                              'bot': self.screen_height - self.monkey_loc - self.monkey_img.get_height()/2}}
@@ -174,8 +174,8 @@ class SwingyMonkey:
                                  (tree['x']-(self.iter+self.background_img.get_width()), tree['y'],
                                   self.tree_img.get_width(), self.tree_gap))
                 
-            trunk_left  = tree['x'] + 215
-            trunk_right = tree['x'] + 290
+            trunk_left  = tree['x']
+            trunk_right = tree['x'] + self.tree_img.get_width()
             trunk_top   = tree['y']
             trunk_bot   = tree['y'] + self.tree_gap
 
