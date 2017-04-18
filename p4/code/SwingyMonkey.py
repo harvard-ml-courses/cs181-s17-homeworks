@@ -54,7 +54,7 @@ class SwingyMonkey:
         try:
             pg.mixer.init()
         except:
-            print "No sound."
+            print("No sound.")
             self.sound = False
 
         # Set up the screen for rendering.
@@ -101,14 +101,14 @@ class SwingyMonkey:
         # Find the next closest tree.
         for tree in self.trees:
             if tree['x']+290 > self.monkey_left:
-                next_tree = tree.copy()
+                self.next_tree_info = tree.copy()
                 break
 
         # Construct the state dictionary to return.
         return { 'score': self.score,
-                 'tree': { 'dist': next_tree['x']+215-self.monkey_right,
-                           'top': self.screen_height-next_tree['y'],
-                           'bot': self.screen_height-next_tree['y']-self.tree_gap},
+                 'tree': { 'dist': self.next_tree_info['x']+215-self.monkey_right,
+                           'top': self.screen_height-self.next_tree_info['y'],
+                           'bot': self.screen_height-self.next_tree_info['y']-self.tree_gap},
                  'monkey': { 'vel': self.vel,
                              'top': self.screen_height - self.monkey_loc + self.monkey_img.get_height()/2,
                              'bot': self.screen_height - self.monkey_loc - self.monkey_img.get_height()/2}}
@@ -144,7 +144,7 @@ class SwingyMonkey:
             self.hook = self.screen_width
 
         # Eliminate trees that have moved off the screen.
-        self.trees = filter(lambda x: x['x'] > -self.tree_img.get_width(), self.trees)
+        self.trees = [x for x in self.trees if x['x'] > -self.tree_img.get_width()]
 
         # Monkey dynamics
         self.monkey_loc -= self.vel
@@ -208,7 +208,7 @@ class SwingyMonkey:
 
         # Render the score
         score_text = self.font.render("Score: %d" % (self.score), 1, (230, 40, 40))
-	self.screen.blit(score_text, score_text.get_rect())
+        self.screen.blit(score_text, score_text.get_rect())
 
         if self.text is not None:
             text = self.font.render(self.text, 1, (230, 40, 40))
