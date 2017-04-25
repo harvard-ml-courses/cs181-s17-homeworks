@@ -10,13 +10,12 @@
 }
 
 % Put in your full name and email address.
-\name{Your Name}
-\email{email@fas.harvard.edu}
+\name{Nathan Nakatsuka}
+\email{cs181-s17-nathan-nakatsuka}
 
 % List any people you worked with.
 \collaborators{%
-  John Doe,
-  Fred Doe
+  Joseph Sedlak
 }
 
 % You don't need to change these.
@@ -185,13 +184,58 @@ the prior is neither weak nor strong?
 \end{enumerate}
 \end{problem}
 
-\begin{solution}
-\begin{sol}
-\begin{enumerate}
-\item To do
-\end{enumerate}
-\end{sol}
-\end{solution}
+\subsubsection*{Solution}
+1)\\
+Bernoulli PMF:\\
+$p(x|\theta)=\prod_{i=1}^{n}\theta^x(1-\theta)^{1-x}$\\
+$\textrm{ln}(p(x|\theta))=n_1\textrm{ln}\theta+n_0\textrm{ln}(1-\theta)$
+Setting the derivative (wrt $\theta$) to $0$, you get the expression for MLE (doesn't make use of prior): $\dfrac{n_1}{n_0+n_1}$
+\\
+$p(\theta|D) = \textrm{Beta}(\theta|n_1+\alpha,n_0+\beta)$. Therefore, expression for MAP:\\
+$\theta_{\textrm{MAP}}=\dfrac{\alpha+n_a-1}{\alpha+\beta+n_1+n_0-2}$\\
+Expression for Posterior Predictive Distribution:\\
+$p(x=1|D) = \dfrac{\alpha+n_a}{\alpha+\beta+n_1+n_0}$.\\
+See figure 1 for plot.
+\\
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{h2_figure1}
+\caption{Plot of MLE, MAP, and posterior predictive distributions for Bernoulli with a Beta prior after various amounts of data.}
+\label{fig:1.1}
+\end{figure}
+
+2)\\
+See Figure 2.\\
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{h2_figure2}
+\caption{Plot of Beta posterior after various amounts of data.}
+\label{fig:1.1}
+\end{figure}
+
+3)\\
+The MLE is purely based on the data, so it starts off with bad estimates until it gets enough data.  Since there are only 16 samples, the original beta prior retains an effect on the final estimate, causing the MAP and posterior predictive estimates to be larger than the MLE at all points.  The MAP estimate starts off higher than the posterior predictive, because it subtracts the equivalent of $1/2$ from the estimate, but after a few data points, the MAP and posterior predictive end up being essentially the same.
+\\
+4)\\
+One might use an isotropic (spherical) prior if it is expected that the weights should be centered around 0 (example, random noise).  
+\\
+5)\\
+$p(\textbf{w}|D) \propto N(\textbf{w}|0,\alpha^{-1}\textbf{I})N(\textbf{y}|\textbf{X}\textbf{w},\beta^{-1}\textbf{I}) = \dfrac{1}{|2\pi \alpha^{-1}\textbf{I}|}\exp(-\dfrac{1}{2}\textbf{w}^{\textrm{T}}\alpha^{-1}\textbf{I}\textbf{w}) \dfrac{1}{|2\pi \beta^{-1}\textbf{I}|}\exp(-\dfrac{1}{2}(\textbf{y}-\textbf{X}\textbf{w})^{\textrm{T}}\beta^{-1}\textbf{I}(\textbf{y}-\textbf{X}\textbf{w}))$\\
+$\textrm{ln} p(\textbf{w}|D) = \textrm{Constant} - \dfrac{1}{2}[\textbf{w}^{\textrm{T}}\alpha^{-1}\textbf{I}\textbf{w}) + (\textbf{y}-\textbf{X}\textbf{w})^{\textrm{T}}\beta^{-1}\textbf{I}(\textbf{y}-\textbf{X}\textbf{w})]$\\
+$\textrm{ln} p(\textbf{w}|D) = \textrm{Constant} - \dfrac{1}{2}(\textbf{w}^{\textrm{T}}(\alpha\textbf{I}+\beta \textbf{X}^{\textrm{T}}\textbf{X})\textbf{w}-2\textbf{w}^{\textrm{T}}(\beta\textbf{X}^{\textrm{T}}\textbf{y}))$\\
+Complete the square:\\
+$\textrm{ln} p(\textbf{w}|D) = \textrm{Constant} - \dfrac{1}{2}a (\textbf{w}-b/a)^2$, where $a=(\alpha\textbf{I}+ \beta \textbf{X}^{\textrm{T}}\textbf{X})$, and $b=(\beta\textbf{X}^{\textrm{T}}\textbf{y})$\\
+Then $\textbf{S}_n=a=(\alpha\textbf{I}+ \beta \textbf{X}^{\textrm{T}}\textbf{X})^{-1}$, and
+$\textbf{m}_n=b/a=(\beta \textbf{S}_n \textbf{X}^{\textrm{T}}\textbf{y})$.\\
+This matches the normal distribution with mean of $\textbf{m}_n$ and variance of $\textbf{S}_n$.
+\\
+6)\\
+If the prior becomes very weak, that means $\alpha$ is very large, so the MAP estimator, which is $\textbf{m}_n=\dfrac{(\beta \textbf{X}^{\textrm{T}}\textbf{y})}{(\alpha\textbf{I}+ \beta \textbf{X}^{\textrm{T}}\textbf{X})}$, reduces to the MLE, which is $\dfrac{\textbf{y}}{\textbf{X}}$.
+
+7)\\
+If the prior is neither weak nor strong, it becomes the regularization constant of LASSO.
+
+
 
 
 \newpage
@@ -259,13 +303,34 @@ where indicator $I_{kj}=1$ if $k=j$ and $I_{kj}=0$ otherwise.
 \end{problem}
 
 
-\begin{solution}
-\begin{sol}
-\begin{enumerate}
-\item To do
-\end{enumerate}
-\end{sol}
-\end{solution}
+\subsubsection*{Solution}
+1)\\
+Given the softmax is purely using exponential functions, all of these functions give non-negative outputs, so the softmax function output must be non-negative.  Since, the numerator is a subset of the denominator, the output can only be at most 1.\\
+2)\\
+If you sum up the numerator of the softmax function, it will equal the denominator, which is a sum of all of the elements of the vector $\textbf{w}$.  Thus, the components sum to 1.  This is a distribution, because it gives values corresponding to each datapoint.\\
+3)\\
+The denominator for each of the softmax functions for a particular vector of values will be the same, and if $z_k < z_l$, then the numerator term of softmax($\textbf{z}$)$_k$ will be less than the numerator of softmax($\textbf{z}$)$_l$, so softmax($\textbf{z}$)$_k$ will be less than softmax($\textbf{z}$)$_l$ for any $k$,$l$.\\
+4)\\
+$\frac{\partial \exp{(\textbf{w}_k^{\textrm{T}}\textbf{x})}}{\partial z_j\sum_{l=1}^{c}\exp{(\textbf{w}_l^{\textrm{T}}\textbf{x})}} =$ \\
+\\
+If $k=j$:\\
+$\dfrac{(\textbf{w}_k^{\textrm{T}}\textbf{x})*\exp{(\textbf{w}_k^{\textrm{T}}\textbf{x})}*(\sum_{l=1}^{c}\exp{(\textbf{w}_l^{\textrm{T}}\textbf{x})})-\exp{(\textbf{w}_k^{\textrm{T}}\textbf{x})}*((\textbf{w}_k^{\textrm{T}}\textbf{x})*\exp{(\textbf{w}_k^{\textrm{T}}\textbf{x})})}{(\sum_{l=1}^{c}\exp{(\textbf{w}_l^{\textrm{T}}\textbf{x})})^2}$\\
+$=$ softmax($\textbf{z}$)$_k(\dfrac{\sum_{l=1}^{c}\exp{(\textbf{w}_l^{\textrm{T}}\textbf{x})}-\exp{(\textbf{w}_l^{\textrm{T}}\textbf{x})}}{\sum_{l=1}^{c}\exp{(\textbf{w}_l^{\textrm{T}}\textbf{x})}})=$ softmax($\textbf{z}$)$_k(I_{kj}-$softmax($\textbf{z}$)$_k$)\\
+\\
+If $k !=j$:\\
+$\dfrac{-\exp{(\textbf{w}_k^{\textrm{T}}\textbf{x})}*(\exp{(\textbf{w}_j^{\textrm{T}}\textbf{x})})}{(\sum_{l=1}^{c}\exp{(\textbf{w}_l^{\textrm{T}}\textbf{x})})^2}=$ softmax($\textbf{z}$)$_k*(-$softmax($\textbf{z}$)$_k$)
+
+(noting that the components sum to 1).\\
+\\
+5)\\
+$\dfrac{\partial}{\partial \textbf{w}_k}L({\textbf{w}_l}) = -\sum_{i=1}^{n}\dfrac{p(y|x_{i};\left\{ \textbf{w}_l \right\})(I_{kj}-p(y|x_{i};\left\{ \textbf{w}_l \right\}))}{p(y|x_{i};\left\{ \textbf{w}_l \right\})}$\\
+The indicator variable becomes a one-hot matrix over all classes and thus becomes $y_{ik}*\textbf{x}_i$.  Thus, the expression becomes:\\
+
+$=$
+$\sum_{i=1}^{n}(p(y|x_{i};\left\{ \textbf{w}_l \right\})-I_{kj})$
+$=$
+$\sum_{i=1}^{n}(p(y|x_{i};\left\{ \textbf{w}_l \right\})-y_{ik})\textbf{x}_i$
+
 
 
 
@@ -353,14 +418,43 @@ $\boldX^{-\top} := (\boldX^{\top})^{-1}$
  \end{problem}
 
 
-\begin{solution}
-\begin{sol}
-\begin{enumerate}
-\item To do
-\end{enumerate}
-\end{sol}
-\end{solution}
 
+\subsubsection*{Solution}
+1)\\
+This can be modeled in part as a multinomial distribution, so:
+$p(D; \boldsymbol{\pi})= \prod_{i=1}^{n}\prod_{k=1}^{c}(\boldsymbol{\pi}_k p(\textbf{x}|\textbf{y}=C_k))^{yk}$
+
+$-\textrm{ln} p(D; \boldsymbol{\pi})= \sum_{i=1}^{n}\sum_{k=1}^{c}-(\textrm{ln} (\boldsymbol{\pi}_k) + \textrm{ln} p(\textbf{x}|\textbf{y}=C_k))*(yk)$\\
+
+2)\\
+From above, we know that the negative log likelihood of the prior is:\\
+$-\sum_{i=1}^{n}\sum_{k=1}^{c}(y_{ik}\textrm{ln}\pi_k)$\\
+Optimizing the function with respect to the constraint gives:\\
+$L(\pi,\lambda) = -\sum_{i=1}^{n}\sum_{k=1}^{c}(y_{ik}\textrm{ln}\pi_k) + \lambda(1-\sum_{k=1}^{c}(\pi_k))$\\
+To attain the optimum of this function, we must solve the two equations setting the derivatives with respect to $\pi_k$ and $\lambda$ to 0:\\
+$\frac{\partial L(\pi,\lambda)}{\partial \pi_k}= 0 = -\sum_{i=1}^{n}\dfrac{y_{ik}}{\pi_k} -\lambda$ \\
+$\frac{\partial L(\pi,\lambda)}{\partial \lambda}= 0 = 1-\sum_{k=1}^{c}(\pi_k)$ \\
+Using these 2 equations, we see that:\\
+$\lambda = n$ and $\hat{\pi} = \dfrac{\sum_{i=1}^{n}(y_{ik})}{\sum_{i=1}^{n}\sum_{k=1}^{c}(y_{ik})}$\\
+This essentially means that the prior for each class is the total number of objects in that class divided by the total number of objects in all classes.\\
+
+3)\\
+$-\textrm{ln}p(\textbf{x}|\textbf{y} = C_k) =  Constant + \dfrac{1}{2}\sum_{k=1}^{c}(\textbf{x}-\mu_k)^{\textrm{T}}\Sigma^{-1}(\textbf{x}-\mu_k)$\\
+$=\dfrac{1}{2}\sum_{k=1}^{c}(\mu_k^{\textrm{T}}\Sigma^{-1}\mu_k + \textbf{x}^{\textrm{T}}\Sigma^{-1}\textbf{x} + 2\textbf{x}^{\textrm{T}}\Sigma^{-1}\mu_k)$\\
+$-\frac{\partial \textrm{ln}p(\textbf{x}|\textbf{y})}{\partial \mu_k} =  \sum_{k=1}^{c}(\mu_k^{\textrm{T}}\Sigma^{-1} + \textbf{x}^{\textrm{T}}\Sigma^{-1})$
+
+4)\\
+$-\frac{\partial \textrm{ln}p(\textbf{x}|\textbf{y})}{\partial \mu_k} = 0 => \hat{\mu_k} = \dfrac{\sum_{i=1}^{n}\textbf{x}_{ik}}{n_k}$
+This means that the MLE for $\mu_k$ is the sum of the observations for a given class divided by the total number of observations in that class.
+
+
+5/6)\\
+$-\textrm{ln}p(\textbf{x}|\textbf{y} = C_k) =  Constant + \dfrac{N}{2}\textrm{ln}|\Sigma| + \dfrac{1}{2}\sum_{k=1}^{c}(\textbf{x}-\mu_k)^{\textrm{T}}\Sigma^{-1}(\textbf{x}-\mu_k)$\\
+$-\textrm{ln}p(\textbf{x}|\textbf{y} = C_k) =  Constant + \dfrac{N}{2}\textrm{ln}|\Sigma| + \dfrac{1}{2}tr(\Sigma^{-1}\sum_{k=1}^{c}(\textbf{x}-\mu_k)^{\textrm{T}}(\textbf{x}-\mu_k))$\\
+From matrix cookbook:\\
+
+$-\frac{\partial \textrm{ln}p(\textbf{x}|\textbf{y})}{\partial \Sigma} =  \dfrac{N}{2}\Sigma^{-\textrm{T}} + \dfrac{1}{2}\Sigma^{\textrm{T}}\sum_{k=1}^{c}(\textbf{x}-\mu_k)^{\textrm{T}}(\textbf{x}-\mu_k))$\\
+$-\frac{\partial \textrm{ln}p(\textbf{x}|\textbf{y})}{\partial \Sigma} = 0 => \hat{\Sigma} = \dfrac{1}{N}\sum_{k=1}^{c}(\textbf{x}-\mu_k)^{\textrm{T}}(\textbf{x}-\mu_k)$
 
 
 
@@ -427,7 +521,7 @@ The classes you implement follow the same pattern as scikit-learn, so they shoul
 
 \end{itemize}
 
-In addition to comparing the decision boundaries of the three models visually:
+In addition to comparing the decision bounadaries of the three models visually:
 \begin{itemize}
 
 \item For logistic regression, report negative log-likelihood loss for several configurations of hyperparameters. Why are your final choices of learning rate ($\eta$) and regularization strength ($\lambda$) reasonable? Plot loss during training for the best of these configurations, with iterations on the x-axis and loss on the y-axis (one way to do this is to add a method to the LogisticRegression Class that displays loss).
@@ -438,18 +532,66 @@ In addition to comparing the decision boundaries of the three models visually:
 
 \end{problem}
 
-\begin{solution}
-\begin{sol}
-\begin{enumerate}
-\item To do
-\end{enumerate}
-\end{sol}
-\end{solution}
+\subsubsection*{Solution}
+1)\\
+The Gaussian generative model with separate co-variance matrices models the distributions the best.  This is because it can form non-linear boundaries.  The model with separate co-variance matrices is better than the one that assumes the same co-variance matrices, because the actual underlying distributions have different co-variances.  \\
+In Table 1 I report different negative log-likelihood losses for different hyperparameters.  The final choices are reasonable, because at a certain point the eta value will not affect much, but it slows down the algorithm to have a lower value.  The lambda value I chose (.1) had slightly higher loss than 1, but this was due to the outliers of the blue points.  Otherwise, it got closer to the red points, and would have been better for future predictions.\\
+For the Gaussian Generative Model with separate covariance matrices, the likelihood was -158.1, and for the model with shared covariance matrices, the likelihood was -185.3.
+
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{logistic_regression_result}
+\caption{Plot of logistic regression classifier decision boundaries.}
+\label{fig:1.3}
+\end{figure}
+
+\begin{table}
+\centering
+\begin{tabular}{llr}
+ %\toprule
+ \multicolumn{2}{c}{Scores} \\
+ Eta & Lambda & Negative Log-Likelihood Score \\
+% \midrule
+ 0.1 & 0.1 & 4744.9\\
+ 0.001 & 0.1 & 34.8 \\
+ 0.0001 & 0.1 & 25.8  \\
+ 0.0001 & 10 & 33.9  \\
+ 0.0001 & 1 & 22.3  \\
+ 0.0001 & 0.1 & 25.8  \\
+ 0.0001 & 0.01 & 28.2  \\
+ %\bottomrule
+\end{tabular}
+\caption{\label{tab:results} Negative log-likelihood scores for different hyperparameters.}
+\end{table}
+
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{h2_figure4}
+\caption{Plot of loss over many iterations in logistic regression classifier.}
+\label{fig:1.4}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{generative_result_shared_covariances}
+\caption{Plot of Gaussian Generative Model classifier decision boundaries with shared covariance matrix.}
+\label{fig:1.5}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{generative_result_separate_covariances}
+\caption{Plot of Gaussian Generative Model classifier decision boundaries with separate covariance matrix.}
+\label{fig:1.6}
+\end{figure}
+
 
 
 \newpage
 \subsection*{Calibration [1pt]}
 Approximately how long did this homework take you to complete?
-
+20 hours
 
 \end{document}
